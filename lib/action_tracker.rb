@@ -1,5 +1,7 @@
-require "action_tracker/version"
+# frozen_string_literal: true
+
+require 'action_tracker/version'
 
 module ActionTracker
-  # Your code goes here...
+  autoload :Config, 'action_tracker/config'
 end
