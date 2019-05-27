@@ -22,7 +22,17 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+You need to put the following values in initializer:
+
+```ruby
+# config/initializers/action_tracker.rb
+
+ActionTracker.configure do |config|
+  config.api_url = ENV['ACTION_TRACKING_API_URL']
+  config.api_key = ENV['ACTION_TRACKING_API_KEY']
+  config.api_secret = ENV['ACTION_TRACKING_API_SECRET']
+end
+```
 
 ## Development
 
