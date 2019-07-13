@@ -101,12 +101,10 @@ module ActionTracker
   module Templates
     class StateChange < ActionTracker::Templates::BaseTemplate
 
-      # Payload includes only user by default. User: { id: 0, name: 'Anonymous', type: 'System' }
+      # Any text, describing the event
       #
-      def payload
-        super
-          .for_event('State changed') # Any text, describing the event
-          .with_content(content)
+      def event_name
+        'State changed'
       end
 
       # Can be any string, representing what changed in your model. Max length limited to 1000 chars

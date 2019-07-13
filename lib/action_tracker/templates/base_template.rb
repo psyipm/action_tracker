@@ -14,12 +14,27 @@ module ActionTracker
         @form ||= ActionTracker::Models::TransitionRecord.new(payload: payload).with_target(target)
       end
 
+      protected
+
       def payload
-        @payload ||= ActionTracker::Models::Payload.new.with_user(user)
+        @payload ||= build_payload
+      end
+
+      def build_payload
+        payload_instance = ActionTracker::Models::Payload.new
+        payload_instance.with_user(user).with_content(content).for_event(event_name)
       end
 
       def user
         @user ||= options[:user] || OpenStruct.new(id: 0, name: 'Anonymous', type: 'System')
+      end
+
+      def content
+        # Override
+      end
+
+      def event_name
+        # Override
       end
     end
   end

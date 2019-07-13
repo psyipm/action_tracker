@@ -3,8 +3,8 @@
 module ActionTracker
   module Templates
     class Destroy < BaseTemplate
-      def payload
-        super.for_event('Deleted')
+      def event_name
+        'Deleted'
       end
     end
   end

@@ -3,15 +3,15 @@
 module ActionTracker
   module Templates
     class Update < BaseTemplate
-      def payload
-        super.for_event('Updated').with_content(changes)
+      def event_name
+        'Updated'
+      end
+
+      def content
+        @changes ||= ModelAuditor::Changes.new(target).filter(skipped_attributes).audit
       end
 
       private
-
-      def changes
-        @changes ||= ModelAuditor::Changes.new(target).filter(skipped_attributes).audit
-      end
 
       def skipped_attributes
         options[:skip] || []

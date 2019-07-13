@@ -3,8 +3,8 @@
 module ActionTracker
   module Templates
     class Create < BaseTemplate
-      def payload
-        super.for_event('Created')
+      def event_name
+        'Created'
       end
     end
   end
