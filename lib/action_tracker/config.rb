@@ -17,9 +17,5 @@ module ActionTracker
     def api_secret
       @api_secret || raise(ActionTracker::ClientNotConfiguredError, missing_value: :api_secret)
     end
-
-    def client
-      OpenStruct.new(access_key: api_key, secret: api_secret)
-    end
   end
 end

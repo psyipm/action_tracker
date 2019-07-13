@@ -1,5 +1,8 @@
 require 'bundler/setup'
 require 'action_tracker'
+require 'webmock/rspec'
+
+require 'pry-byebug'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -10,5 +13,13 @@ RSpec.configure do |config|
 
   config.expect_with :rspec do |c|
     c.syntax = :expect
+  end
+
+  config.before(:each) do
+    ActionTracker.configure do |c|
+      c.api_key = 'test-api-key'
+      c.api_secret = 'test-api-secret'
+      c.api_url = 'https://action-tracker.example.com/api/v1'
+    end
   end
 end

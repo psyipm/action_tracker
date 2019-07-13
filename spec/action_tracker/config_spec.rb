@@ -7,6 +7,8 @@ RSpec.describe ActionTracker::Config do
   let(:client) { config.client }
 
   it 'should raise error if not configured' do
+    config = described_class.new
+
     expect { config.api_url }.to raise_error(ActionTracker::ClientNotConfiguredError)
     expect { config.api_key }.to raise_error(ActionTracker::ClientNotConfiguredError)
     expect { config.api_secret }.to raise_error(ActionTracker::ClientNotConfiguredError)
@@ -22,8 +24,5 @@ RSpec.describe ActionTracker::Config do
     expect(config.api_url).to_not be_nil
     expect(config.api_key).to eq 'api-key'
     expect(config.api_secret).to eq 'api-secret'
-
-    expect(client.access_key).to eq 'api-key'
-    expect(client.secret).to eq 'api-secret'
   end
 end

@@ -1,0 +1,13 @@
+{
+  "_index": "27d14c70c4f97da5",
+  "_type": "transitions",
+  "_id": "fb9ad369-1d2b-47cb-b3cb-3bf1bdca7147",
+  "_version": 1,
+  "result": "created",
+  "_shards": {
+    "total": 2,
+    "successful": 1,
+    "failed": 0
+  },
+  "created": true
+}

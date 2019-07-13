@@ -1,15 +1,11 @@
 # ActionTracker
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/action_tracker`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
-
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'action_tracker'
+gem 'action_tracker_client', require: 'action_tracker'
 ```
 
 And then execute:
@@ -22,6 +18,8 @@ Or install it yourself as:
 
 ## Usage
 
+### Configuration
+
 You need to put the following values in initializer:
 
 ```ruby
@@ -32,6 +30,102 @@ ActionTracker.configure do |config|
   config.api_key = ENV['ACTION_TRACKING_API_KEY']
   config.api_secret = ENV['ACTION_TRACKING_API_SECRET']
 end
+```
+
+### Reading records
+
+```ruby
+api = ActionTracker::Models::TransitionRecord.new
+data = api.index(target_id: order.id, target_type: 'Order', per_page: 25, cursor: 'Y3VycmVudF9wYWdl')
+
+#<ActionTracker::CollectionProxy:0x00007f958b6970a8
+# ...
+
+data.each do |record|
+  puts record.inspect
+end
+
+#<ActionTracker::Models::TransitionRecord:0x00007f9584d44470 @id="a51b2fe2-fa92-4e91-bdcd-5beee9081903"...
+#<ActionTracker::Models::TransitionRecord:0x00007f9584d3dfd0 @id="810b900d-d24b-4206-85e3-b7a53e55a060"...
+```
+
+### Writing records
+
+Call ActionTracker::Recorder after creating or updating your model:
+
+basic usage: `ActionTracker::Recorder.new(:event_name).call(model)`
+
+Where :event_name is the name of template. Custom templates could be defined if needed.
+
+valid events (templates): `[:create, :update, :destroy]`
+
+```ruby
+  # Suppose you have some command, creating an order:
+
+  class CreateOrderCommand
+    # https://github.com/krisleech/wisper
+    include Wisper::Publisher
+
+    def initialize(order_form)
+      @form = order_form
+
+      subscribe(ActionTracker::Recorder.new(:create), on: :ok, with: :call)
+    end
+
+    def call
+      if order.save
+        broadcast(:ok, order)
+      else
+        broadcast(:failed, order)
+      end
+    end
+  end
+```
+
+or with ActiveRecord callbacks:
+
+```ruby
+class User < ApplicationRecord
+  after_update -> { ActionTracker::Recorder.new(:update).call(self) }
+end
+```
+
+### Defining custom templates
+
+Action tracker will look for templates in ActionTracker::Templates module.
+
+```ruby
+# app/models/action_tracker/templates/state_change.rb
+
+module ActionTracker
+  module Templates
+    class StateChange < ActionTracker::Templates::BaseTemplate
+
+      # Payload includes only user by default. User: { id: 0, name: 'Anonymous', type: 'System' }
+      #
+      def payload
+        super
+          .for_event('State changed') # Any text, describing the event
+          .with_content(content)
+      end
+
+      # Can be any string, representing what changed in your model. Max length limited to 1000 chars
+      #
+      def content
+        "from `#{target.previous_state_name}` to `#{target.current_state_name}`"
+      end
+
+      # The user who performed the change. { id: 0, name: 'Anonymous', type: 'System' }
+      #
+      def user
+        @user ||= CurrentUser.fetch
+      end
+    end
+  end
+end
+
+# Call recorder
+ActionTracker::Recorder.new(:state_change).call(target)
 ```
 
 ## Development
