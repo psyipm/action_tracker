@@ -2,8 +2,7 @@
 
 [![Build Status](https://semaphoreci.com/api/v1/ipm/action_tracker/branches/master/badge.svg)](https://semaphoreci.com/ipm/action_tracker)
 [![Maintainability](https://api.codeclimate.com/v1/badges/cfdcabfc3610c6eac895/maintainability)](https://codeclimate.com/github/psyipm/action_tracker/maintainability)
-[![Gem Version](https://badge.fury.io/rb/action_tracker.svg)](https://badge.fury.io/rb/action_tracker)
-
+[![Gem Version](https://badge.fury.io/rb/action_tracker_client.svg)](https://badge.fury.io/rb/action_tracker_client)
 
 ## Installation
 
