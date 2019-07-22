@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 require 'virtus'
-require 'active_model/naming'
+require 'active_model'
 
 module ActionTracker
   module Models
     class ApplicationRecord
       include Virtus.model
+      include ActiveModel::Validations
+
       attribute :id, Integer
 
       def self.mimic(model_name)
@@ -18,14 +20,22 @@ module ActionTracker
       end
 
       def self.infer_model_name
-        class_name = name.split("::").last
-        return :form if class_name == "Form"
+        class_name = name.split('::').last
+        return :form if class_name == 'Form'
 
-        class_name.chomp("Form").underscore.to_sym
+        class_name.chomp('Form').underscore.to_sym
       end
 
       def self.model_name
         ActiveModel::Name.new(self, nil, mimicked_model_name.to_s.camelize)
+      end
+
+      def model_name
+        self.class.model_name
+      end
+
+      def to_key
+        [id]
       end
     end
   end

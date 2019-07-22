@@ -86,7 +86,9 @@ or with ActiveRecord callbacks:
 
 ```ruby
 class User < ApplicationRecord
-  after_update -> { ActionTracker::Recorder.new(:update).call(self) }
+  SKIPPED_ATTRIBUTES = [:password, :updated_at]
+
+  after_update -> { ActionTracker::Recorder.new(:update, skip: SKIPPED_ATTRIBUTES).call(self) }
 end
 ```
 
@@ -122,8 +124,19 @@ module ActionTracker
   end
 end
 
+module ActionTracker
+  module Templates
+    module Orders
+      class SomeCustomEvent < ActionTracker::Templates::BaseTemplate
+        # ...
+      end
+    end
+  end
+end
+
 # Call recorder
 ActionTracker::Recorder.new(:state_change).call(target)
+ActionTracker::Recorder.new('Orders::SomeCustomEvent').call(target)
 ```
 
 ## Development

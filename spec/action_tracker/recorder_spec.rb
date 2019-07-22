@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'support/test_order_shared_context'
 
 RSpec.describe ActionTracker::Recorder do
+  include_context 'test_order'
+
   let(:response_body) { File.read('spec/stubs/transition_created_body.json') }
 
   let!(:create_transition_stub) do
@@ -10,17 +13,21 @@ RSpec.describe ActionTracker::Recorder do
       .to_return(status: 201, body: response_body, headers: { content_type: 'application/json' })
   end
 
-  let(:order) { OpenStruct.new(id: 1, title: 'some_test_order') }
-
-  [:create, :update, :destroy].each do |template_name|
+  [:create, :destroy].each do |template_name|
     it "should build `#{template_name}` form and perform API call" do
-      allow(order).to receive(:previous_changes).and_return({})
-
-      recorder = described_class.new(template_name)
+      recorder = described_class.new(template_name, content: 'content')
 
       recorder.call(order)
 
       expect(create_transition_stub).to have_been_requested.once
     end
+  end
+
+  it 'should build `:update` form' do
+    allow(order).to receive(:previous_changes).and_return(order_changes)
+
+    described_class.new(:update).call(order)
+
+    expect(create_transition_stub).to have_been_requested.once
   end
 end

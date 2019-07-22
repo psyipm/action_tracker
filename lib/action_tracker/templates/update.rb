@@ -8,13 +8,21 @@ module ActionTracker
       end
 
       def content
-        @changes ||= ModelAuditor::Changes.new(target).filter(skipped_attributes).audit
+        @content ||= ModelAuditor::Changes.new(inspectable, changes).filter(skipped_attributes).audit
       end
 
       private
 
+      def inspectable
+        options[:reference] || target
+      end
+
+      def changes
+        options[:changes]
+      end
+
       def skipped_attributes
-        options[:skip] || []
+        options[:skip]
       end
     end
   end

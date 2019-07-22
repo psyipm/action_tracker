@@ -10,7 +10,9 @@ module ActionTracker
       attribute :created_at, DateTime
       attribute :payload, ActionTracker::Models::Payload
 
-      delegate :event, :content, to: :payload
+      delegate :event, :content, :user, to: :payload
+
+      validate :check_payload
 
       def with_target(target)
         self.target_id = target.id
@@ -36,6 +38,18 @@ module ActionTracker
 
       def attributes
         super.merge(payload: payload.attributes.except(:id))
+      end
+
+      def title
+        [event, content].reject(&:blank?).compact.join(': ')
+      end
+
+      private
+
+      def check_payload
+        return if payload.valid?
+
+        errors.add(:payload, :invalid)
       end
     end
   end

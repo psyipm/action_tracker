@@ -20,6 +20,7 @@ module ActionTracker
     autoload :ApplicationRecord, 'action_tracker/models/application_record'
     autoload :TransitionRecord, 'action_tracker/models/transition_record'
     autoload :Payload, 'action_tracker/models/payload'
+    autoload :User, 'action_tracker/models/user'
   end
 
   module Templates

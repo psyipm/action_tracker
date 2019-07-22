@@ -1,18 +1,22 @@
+# frozen_string_literal: true
+
 module ActionTracker
   module Models
-    class Payload < ApplicationRecord
+    class Payload < ActionTracker::Models::ApplicationRecord
       MAX_CONTENT_LENGTH = 1000
 
-      attribute :user_id, Integer
-      attribute :user_name, String
-      attribute :user_type, String
       attribute :event, String
       attribute :content, String
+      attribute :user, ActionTracker::Models::User
+
+      validates :event, :content, presence: true
 
       def with_user(user)
-        self[:user_id] = user&.id
-        self[:user_name] = user&.name
-        self[:user_type] = user&.type
+        self[:user] = ActionTracker::Models::User.new(
+          id: user.try(:id),
+          name: user.try(:name),
+          type: user.try(:type)
+        )
 
         self
       end

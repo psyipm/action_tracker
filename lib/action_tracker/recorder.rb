@@ -20,6 +20,7 @@ module ActionTracker
 
     def call(target)
       form = template_klass.new(target, options).form
+      return unless form.valid?
 
       @response = connection.post form.collection_path, body: form.attributes
       @response.to_h
