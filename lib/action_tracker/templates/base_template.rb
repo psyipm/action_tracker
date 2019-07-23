@@ -22,7 +22,12 @@ module ActionTracker
 
       def build_payload
         payload_instance = ActionTracker::Models::Payload.new
-        payload_instance.with_user(user).with_content(content).for_event(event_title)
+
+        payload_instance
+          .with_user(user)
+          .with_content(content)
+          .with_reference(reference)
+          .for_event(event_title)
       end
 
       def user

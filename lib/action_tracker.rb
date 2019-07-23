@@ -21,6 +21,7 @@ module ActionTracker
     autoload :TransitionRecord, 'action_tracker/models/transition_record'
     autoload :Payload, 'action_tracker/models/payload'
     autoload :User, 'action_tracker/models/user'
+    autoload :Reference, 'action_tracker/models/reference'
   end
 
   module Templates

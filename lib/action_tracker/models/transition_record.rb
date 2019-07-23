@@ -16,7 +16,7 @@ module ActionTracker
 
       def with_target(target)
         self.target_id = target.id
-        self.target_type = target.class.name
+        self.target_type = target.try(:type) || target.class.name
 
         self
       end
