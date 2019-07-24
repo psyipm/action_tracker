@@ -37,6 +37,10 @@ module ActionTracker
       def to_key
         [id]
       end
+
+      def present_attributes
+        attributes.reject { |_key, value| value.blank? }
+      end
     end
   end
 end

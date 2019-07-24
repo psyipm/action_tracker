@@ -22,7 +22,7 @@ module ActionTracker
       form = template_klass.new(target, options).form
       return unless form.valid?
 
-      @response = connection.post form.collection_path, body: form.attributes
+      @response = connection.post form.collection_path, body: form.present_attributes
       @response.to_h
     end
 

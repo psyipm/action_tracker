@@ -11,7 +11,10 @@ module ActionTracker
       end
 
       def form
-        @form ||= ActionTracker::Models::TransitionRecord.new(payload: payload).with_target(target)
+        @form ||= ActionTracker::Models::TransitionRecord.new(
+          payload: payload,
+          reference: reference
+        ).with_target(target)
       end
 
       protected
@@ -26,7 +29,6 @@ module ActionTracker
         payload_instance
           .with_user(user)
           .with_content(content)
-          .with_reference(reference)
           .for_event(event_title)
       end
 
