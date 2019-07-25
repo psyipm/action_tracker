@@ -30,7 +30,7 @@ RSpec.describe ActionTracker::Templates::BaseTemplate do
     template = described_class.new(order, reference: reference)
     form = template.form
 
-    expect(form.reference.id).to eq reference.id
-    expect(form.reference.type).to eq reference.type
+    expect(form.reference_id).to eq reference.id
+    expect(form.reference_type).to eq reference.type
   end
 end

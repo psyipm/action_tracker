@@ -9,7 +9,8 @@ module ActionTracker
       attribute :target_type, String
       attribute :created_at, DateTime
       attribute :payload, ActionTracker::Models::Payload
-      attribute :reference, ActionTracker::Models::Reference
+      attribute :reference_id, Integer
+      attribute :reference_type, String
 
       delegate :event, :content, :user, to: :payload
 
@@ -25,7 +26,8 @@ module ActionTracker
       def reference=(item)
         return unless item
 
-        super(id: item.try(:id), type: item.try(:type) || item.class.name)
+        self[:reference_id] = item.try(:id)
+        self[:reference_type] = item.try(:type) || item.class.name
       end
 
       def index(params = {})
