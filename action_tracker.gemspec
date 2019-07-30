@@ -32,7 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activesupport', '>= 4.0'
   spec.add_dependency 'api_signature', '~> 0.1.5'
   spec.add_dependency 'httparty', '~> 0.17.0'
-  spec.add_dependency 'model_auditor', '~> 0.0.1'
+  spec.add_dependency 'model_auditor', '~> 0.0.2'
 
   spec.add_dependency 'virtus', '~> 1.0', '>= 1.0.5'
 end

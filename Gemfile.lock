@@ -6,7 +6,7 @@ PATH
       activesupport (>= 4.0)
       api_signature (~> 0.1.5)
       httparty (~> 0.17.0)
-      model_auditor (~> 0.0.1)
+      model_auditor (~> 0.0.2)
       virtus (~> 1.0, >= 1.0.5)
 
 GEM
@@ -72,7 +72,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2019.0331)
     minitest (5.11.3)
-    model_auditor (0.0.1)
+    model_auditor (0.0.2)
     multi_xml (0.6.0)
     nenv (0.3.0)
     notiffany (0.1.1)
