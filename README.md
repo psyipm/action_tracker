@@ -33,6 +33,15 @@ ActionTracker.configure do |config|
   config.api_url = ENV['ACTION_TRACKING_API_URL']
   config.api_key = ENV['ACTION_TRACKING_API_KEY']
   config.api_secret = ENV['ACTION_TRACKING_API_SECRET']
+
+  # Avalilable options:
+  #
+  #   :inline (default) -> performs request to external API
+  #   :test             -> stores request parameters, can be accessed via ActionTracker.records
+  #   :custom           -> calls custom labda
+  #
+  config.tracking_method = :custom
+  config.custom_worker_proc = ->(form) { MyCustomActionTrackingJob.perform_later(form.attributes) }
 end
 ```
 
@@ -141,6 +150,42 @@ end
 # Call recorder
 ActionTracker::Recorder.new(:state_change).call(target)
 ActionTracker::Recorder.new('Orders::SomeCustomEvent').call(target)
+```
+
+## Testing
+
+Set tracking method to `:test` in application environment config and clear records after each spec
+
+```ruby
+  # config/environments/test.rb
+
+  config.after_initialize do
+    ActionTracker.config.tracking_method = :test
+  end
+
+  # spec/rails_helper.rb
+
+  config.after(:each) do
+    ActionTracker.clear_records
+  end
+```
+
+```ruby
+  ActionTracker.records
+
+  => [{:target_id=>76, :target_type=>"Order", :payload=>{:event=>"Created payment #89", :content=>"amount 100.0", :user=>{:id=>0, :name=>"Anonymous", :type=>"System"}}, :reference_id=>89, :reference_type=>"PaymentTransaction"}]
+
+  ActionTracker.records.last_event
+
+  => "Created payment #89"
+
+  ActionTracker.records.select_by('payload.user.name', 'Anonymous')
+
+  => [{:target_id=>76, :target_type=>"Order".....
+
+  ActionTracker.records.select_by('payload.user.name', 'SomeUser')
+
+  => []
 ```
 
 ## Development
