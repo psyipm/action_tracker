@@ -22,7 +22,7 @@ module ActionTracker
       form = template_klass.new(target, options).form
       return unless form.valid?
 
-      @response = connection.post form.collection_path, body: form.present_attributes
+      @response = ActionTracker::Workers::Factory.new(form).instance.perform
       @response.to_h
     end
 
@@ -37,10 +37,6 @@ module ActionTracker
       raise UndefinedTemplateError, template_name unless klass
 
       klass
-    end
-
-    def connection
-      @connection ||= ActionTracker::Connection.new
     end
   end
 end

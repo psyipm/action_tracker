@@ -21,6 +21,10 @@ module ActionTracker
         self
       end
 
+      def user
+        super || ActionTracker::Models::User.default_user
+      end
+
       def for_event(event)
         self[:event] = event.to_s.humanize
         self
@@ -29,6 +33,10 @@ module ActionTracker
       def with_content(content)
         self[:content] = content.to_s.truncate(MAX_CONTENT_LENGTH)
         self
+      end
+
+      def attributes
+        super.merge(user: user.attributes)
       end
     end
   end

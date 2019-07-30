@@ -8,11 +8,12 @@ require 'active_support/core_ext/object'
 
 module ActionTracker
   autoload :Config, 'action_tracker/config'
-  autoload :SignedRequest, 'action_tracker/signed_request'
-  autoload :Connection, 'action_tracker/connection'
 
-  autoload :Pagination, 'action_tracker/pagination'
-  autoload :CollectionProxy, 'action_tracker/collection_proxy'
+  autoload :CollectionProxy, 'action_tracker/utils/collection_proxy'
+  autoload :Connection, 'action_tracker/utils/connection'
+  autoload :Pagination, 'action_tracker/utils/pagination'
+  autoload :RecordsCollection, 'action_tracker/utils/records_collection'
+  autoload :SignedRequest, 'action_tracker/utils/signed_request'
 
   autoload :Recorder, 'action_tracker/recorder'
 
@@ -30,11 +31,26 @@ module ActionTracker
     autoload :Destroy, 'action_tracker/templates/destroy'
   end
 
+  module Workers
+    autoload :Factory, 'action_tracker/workers/factory'
+    autoload :Inline, 'action_tracker/workers/inline'
+    autoload :Custom, 'action_tracker/workers/custom'
+    autoload :Test, 'action_tracker/workers/test'
+  end
+
   def self.config
     @config ||= Config.new
   end
 
   def self.configure
     yield(config)
+  end
+
+  def self.records
+    @records || clear_records
+  end
+
+  def self.clear_records
+    @records = ActionTracker::RecordsCollection.new
   end
 end

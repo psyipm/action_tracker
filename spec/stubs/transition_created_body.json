@@ -1,13 +1,18 @@
 {
-  "_index": "27d14c70c4f97da5",
-  "_type": "transitions",
-  "_id": "fb9ad369-1d2b-47cb-b3cb-3bf1bdca7147",
-  "_version": 1,
-  "result": "created",
-  "_shards": {
-    "total": 2,
-    "successful": 1,
-    "failed": 0
-  },
-  "created": true
+  "created_at": "2019-07-30T09:22:38.895+00:00",
+  "updated_at": "2019-07-30T09:22:38.895+00:00",
+  "id": "customer_77213",
+  "target_id": "77213",
+  "target_type": "Customer",
+  "reference_id": "77213",
+  "reference_type": "Customer",
+  "payload": {
+    "event": "Updated",
+    "content": "{\"Phone\"=>\"321123123\"}",
+    "user": {
+      "id": "0",
+      "name": "Anonymous",
+      "type": "System"
+    }
+  }
 }

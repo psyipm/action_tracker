@@ -25,4 +25,11 @@ RSpec.describe ActionTracker::Config do
     expect(config.api_key).to eq 'api-key'
     expect(config.api_secret).to eq 'api-secret'
   end
+
+  it 'should validate tracking method' do
+    expect(config.tracking_method).to eq :inline
+
+    expect { config.tracking_method = :does_not_exists }
+      .to raise_error(ActionTracker::InvalidTrackingMethodError)
+  end
 end
