@@ -5,9 +5,11 @@ module ActionTracker
     def select_by(path, value)
       keys = path.to_s.split('.').map(&:to_sym)
 
-      select do |item|
+      items = select do |item|
         item.dig(*keys) == value
       end
+
+      self.class.new items
     end
 
     def last_event
