@@ -183,6 +183,10 @@ Set tracking method to `:test` in application environment config and clear recor
 
   => [{:target_id=>76, :target_type=>"Order".....
 
+  ActionTracker.records.last_content
+
+  => "amount 100.0"
+
   ActionTracker.records.select_by('payload.user.name', 'SomeUser')
 
   => []

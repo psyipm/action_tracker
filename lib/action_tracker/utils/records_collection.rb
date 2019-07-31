@@ -15,5 +15,9 @@ module ActionTracker
     def last_event
       last.dig(:payload, :event)
     end
+
+    def last_content
+      last.dig(:payload, :content)
+    end
   end
 end
