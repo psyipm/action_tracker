@@ -2,6 +2,7 @@
 
 module ActionTracker
   class UndefinedTemplateError < StandardError; end
+  class EmptyTargetError < StandardError; end
 
   # Usage:
   #   ActionTracker::Recorder.new(:create).call(order)
@@ -21,6 +22,7 @@ module ActionTracker
     def call(target)
       form = template_klass.new(target, options).form
       return unless form.valid?
+      raise EmptyTargetError, inspect unless target
 
       @response = ActionTracker::Workers::Factory.new(form).instance.perform
       @response.to_h

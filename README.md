@@ -175,7 +175,7 @@ Set tracking method to `:test` in application environment config and clear recor
 
   => [{:target_id=>76, :target_type=>"Order", :payload=>{:event=>"Created payment #89", :content=>"amount 100.0", :user=>{:id=>0, :name=>"Anonymous", :type=>"System"}}, :reference_id=>89, :reference_type=>"PaymentTransaction"}]
 
-  ActionTracker.records.last_event
+  ActionTracker.last_event
 
   => "Created payment #89"
 

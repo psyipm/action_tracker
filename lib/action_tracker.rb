@@ -46,6 +46,10 @@ module ActionTracker
     yield(config)
   end
 
+  def self.last_event
+    records.last_event
+  end
+
   def self.records
     @records || clear_records
   end

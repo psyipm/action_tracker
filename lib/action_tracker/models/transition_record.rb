@@ -17,7 +17,7 @@ module ActionTracker
       validate :check_payload
 
       def with_target(target)
-        self.target_id = target.id
+        self.target_id = target.try(:id)
         self.target_type = target.try(:type) || target.class.name
 
         self
