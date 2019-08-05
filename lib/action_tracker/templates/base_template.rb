@@ -39,7 +39,7 @@ module ActionTracker
       # Override
       #
       def content
-        options[:content]
+        options[:content] || target.try(:id)
       end
 
       def event_title

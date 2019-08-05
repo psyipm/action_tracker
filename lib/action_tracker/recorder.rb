@@ -20,8 +20,8 @@ module ActionTracker
     end
 
     def call(target)
-      form = template_klass.new(target, options).form
-      return unless form.valid?
+      form = options[:form] || build_form(target)
+      return form.errors unless form.valid?
       raise EmptyTargetError, inspect unless target
 
       @response = ActionTracker::Workers::Factory.new(form).instance.perform
@@ -29,6 +29,10 @@ module ActionTracker
     end
 
     private
+
+    def build_form(target)
+      template_klass.new(target, options).form
+    end
 
     def template_name
       @template_name.to_s.classify
