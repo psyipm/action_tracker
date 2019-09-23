@@ -2,14 +2,22 @@
 
 module ActionTracker
   module Pagination
-    delegate :cursor, to: :meta
+    delegate :next_cursor, :current_cursor, to: :meta
 
     def size
       raw_data.try(:size)
     end
 
+    def per_page
+      meta.per_page.to_i
+    end
+
     def last_page?
-      cursor.blank?
+      next_cursor.blank?
+    end
+
+    def first_page?
+      current_cursor.blank?
     end
   end
 end
