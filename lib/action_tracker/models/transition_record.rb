@@ -32,23 +32,20 @@ module ActionTracker
 
       def index(params = {})
         path = processed_path(collection_path, params)
-        @response ||= Connection.new.get(path)
 
-        ActionTracker::CollectionProxy.new @response, self.class.model_name
+        parse_response(path)
       end
 
       def filtered_by_users(params = {})
         path = processed_path(users(params[:user_id]), params.except(:user_id))
-        @response ||= Connection.new.get(path)
 
-        ActionTracker::CollectionProxy.new @response, self.class.model_name
+        parse_response(path)
       end
 
       def filtered_by_users_count(params = {})
         path = processed_path(users(params[:user_id]) + '/count', params.except(:user_id))
-        @response ||= Connection.new.get(path)
 
-        ActionTracker::CollectionProxy.new @response, self.class.model_name
+        parse_response(path)
       end
 
       def collection_path
@@ -72,6 +69,12 @@ module ActionTracker
       end
 
       private
+
+      def parse_response(path)
+        @response ||= Connection.new.get(path)
+
+        ActionTracker::CollectionProxy.new @response, self.class.model_name
+      end
 
       def check_payload
         return if payload.valid?
