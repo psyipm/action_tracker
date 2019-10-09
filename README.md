@@ -62,6 +62,25 @@ end
 #<ActionTracker::Models::TransitionRecord:0x00007f9584d3dfd0 @id="810b900d-d24b-4206-85e3-b7a53e55a060"...
 ```
 
+### Records filtered by user
+```ruby
+api = ActionTracker::Models::TransitionRecord.new
+data = api.filtered_by_users(user_id: user.id, target_id: order.id, target_type: 'Order', per_page: 25, cursor: 'Y3VycmVudF9wYWdl')
+
+#<ActionTracker::CollectionProxy:0x00007f958b6970a8
+# ...
+
+data.each do |record|
+  puts record.inspect
+end
+
+#<ActionTracker::Models::TransitionRecord:0x00007f9584d44470 @id="a51b2fe2-fa92-4e91-bdcd-5beee9081903"...
+#<ActionTracker::Models::TransitionRecord:0x00007f9584d3dfd0 @id="810b900d-d24b-4206-85e3-b7a53e55a060"...
+
+# data = api.filtered_by_users_count(user_id: user.id, target_id: order.id, target_type: 'Order')
+# this will return count of actions 
+```
+
 ### Writing records
 
 Call ActionTracker::Recorder after creating or updating your model:
