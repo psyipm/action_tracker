@@ -31,14 +31,29 @@ module ActionTracker
       end
 
       def index(params = {})
-        path = [collection_path, params.to_query].reject(&:blank?).compact.join('?')
-        @response ||= Connection.new.get(path)
+        path = processed_path(collection_path, params)
 
-        ActionTracker::CollectionProxy.new @response, self.class.model_name
+        parse_response(path)
+      end
+
+      def filtered_by_users(params = {})
+        path = processed_path(users(params[:user_id]), params.except(:user_id))
+
+        parse_response(path)
+      end
+
+      def filtered_by_users_count(params = {})
+        path = processed_path(users(params[:user_id]) + '/count', params.except(:user_id))
+
+        parse_response(path)
       end
 
       def collection_path
         'transitions'
+      end
+
+      def users(user_id)
+        "users/#{user_id}"
       end
 
       def payload
@@ -55,10 +70,20 @@ module ActionTracker
 
       private
 
+      def parse_response(path)
+        @response ||= Connection.new.get(path)
+
+        ActionTracker::CollectionProxy.new @response, self.class.model_name
+      end
+
       def check_payload
         return if payload.valid?
 
         errors.add(:payload, :invalid)
+      end
+
+      def processed_path(collection_name, params)
+        [collection_name, params.to_query].reject(&:blank?).compact.join('?')
       end
     end
   end
