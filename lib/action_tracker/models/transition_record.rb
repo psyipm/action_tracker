@@ -11,6 +11,7 @@ module ActionTracker
       attribute :payload, ActionTracker::Models::Payload
       attribute :reference_id, Integer
       attribute :reference_type, String
+      attribute :user_id, String
 
       delegate :event, :content, :user, to: :payload
 
