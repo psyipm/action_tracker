@@ -31,21 +31,21 @@ module ActionTracker
       end
 
       def index(params = {})
-        path = processed_path(collection_path, params)
+        @path = processed_path(collection_path, params)
 
-        parse_response(path)
+        parse_response
       end
 
       def filtered_by_users(params = {})
-        path = processed_path(users(params[:user_id]), params.except(:user_id))
+        @path = processed_path(users(params[:user_id]), params.except(:user_id))
 
-        parse_response(path)
+        parse_response
       end
 
       def filtered_by_users_count(params = {})
-        path = processed_path(users(params[:user_id]) + '/count', params.except(:user_id))
+        @path = processed_path(users(params[:user_id]) + '/count', params.except(:user_id))
 
-        parse_response(path)
+        response
       end
 
       def collection_path
@@ -70,10 +70,12 @@ module ActionTracker
 
       private
 
-      def parse_response(path)
-        @response ||= Connection.new.get(path)
+      def parse_response
+        ActionTracker::CollectionProxy.new response, self.class.model_name
+      end
 
-        ActionTracker::CollectionProxy.new @response, self.class.model_name
+      def response
+        @response ||= Connection.new.get(@path)
       end
 
       def check_payload
