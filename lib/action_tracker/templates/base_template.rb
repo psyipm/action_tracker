@@ -60,7 +60,7 @@ module ActionTracker
       end
 
       def created_at
-        options[:created_at] || Time.zone.now
+        options[:created_at] || Time.zone&.now
       end
 
       def reference
