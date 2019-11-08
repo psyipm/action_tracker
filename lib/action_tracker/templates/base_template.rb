@@ -13,7 +13,8 @@ module ActionTracker
       def form
         @form ||= ActionTracker::Models::TransitionRecord.new(
           payload: payload,
-          reference: reference
+          reference: reference,
+          created_at: created_at
         ).with_target(target)
       end
 
@@ -56,6 +57,10 @@ module ActionTracker
 
       def title_append
         options[:title_append]
+      end
+
+      def created_at
+        options[:created_at] || Time.zone.now
       end
 
       def reference
