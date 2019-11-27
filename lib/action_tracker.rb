@@ -8,18 +8,19 @@ require 'active_support/core_ext/object'
 
 module ActionTracker
   autoload :Config, 'action_tracker/config'
+  autoload :Recorder, 'action_tracker/recorder'
 
   autoload :CollectionProxy, 'action_tracker/utils/collection_proxy'
   autoload :Connection, 'action_tracker/utils/connection'
   autoload :Pagination, 'action_tracker/utils/pagination'
   autoload :RecordsCollection, 'action_tracker/utils/records_collection'
   autoload :SignedRequest, 'action_tracker/utils/signed_request'
-
-  autoload :Recorder, 'action_tracker/recorder'
+  autoload :HttpGateway, 'action_tracker/utils/http_gateway'
 
   module Models
     autoload :ApplicationRecord, 'action_tracker/models/application_record'
     autoload :TransitionRecord, 'action_tracker/models/transition_record'
+    autoload :StatisticRecord, 'action_tracker/models/statistic_record'
     autoload :Payload, 'action_tracker/models/payload'
     autoload :User, 'action_tracker/models/user'
   end

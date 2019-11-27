@@ -23,7 +23,7 @@ module ActionTracker
     end
 
     def raw_data
-      @response.dig(model_name.plural)
+      @response.dig(model_name.plural) || @response.dig('data')
     end
 
     def entry_name(options = {})
