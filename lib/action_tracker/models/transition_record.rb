@@ -48,6 +48,12 @@ module ActionTracker
         request(path)
       end
 
+      def filtered_by_users_simple_count(params = {})
+        path = processed_path(users(params[:user_id]) + '/without_lambda_count', params.except(:user_id))
+
+        request(path)
+      end
+
       def payload
         super.presence || @payload = ActionTracker::Models::Payload.new
       end
