@@ -3,6 +3,8 @@
 module ActionTracker
   module Models
     class TransitionRecord < ActionTracker::Models::ApplicationRecord
+      include ActionTracker::HttpGateway
+
       mimic 'transition'
 
       attribute :target_id, Integer
@@ -31,29 +33,19 @@ module ActionTracker
       end
 
       def index(params = {})
-        @path = processed_path(collection_path, params)
-
-        parse_response
+        parse_response request(processed_path(collection_path, params))
       end
 
       def filtered_by_users(params = {})
-        @path = processed_path(users(params[:user_id]), params.except(:user_id))
+        path = processed_path(users(params[:user_id]), params.except(:user_id))
 
-        parse_response
+        parse_response request(path)
       end
 
       def filtered_by_users_count(params = {})
-        @path = processed_path(users(params[:user_id]) + '/count', params.except(:user_id))
+        path = processed_path(users(params[:user_id]) + '/count', params.except(:user_id))
 
-        response
-      end
-
-      def collection_path
-        'transitions'
-      end
-
-      def users(user_id)
-        "users/#{user_id}"
+        request(path)
       end
 
       def payload
@@ -68,24 +60,20 @@ module ActionTracker
         [event, content].reject(&:blank?).compact.join(': ')
       end
 
+      def collection_path
+        'transitions'
+      end
+
+      def users(user_id)
+        "users/#{user_id}"
+      end
+
       private
-
-      def parse_response
-        ActionTracker::CollectionProxy.new response, self.class.model_name
-      end
-
-      def response
-        @response ||= Connection.new.get(@path)
-      end
 
       def check_payload
         return if payload.valid?
 
         errors.add(:payload, :invalid)
-      end
-
-      def processed_path(collection_name, params)
-        [collection_name, params.to_query].reject(&:blank?).compact.join('?')
       end
     end
   end
