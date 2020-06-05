@@ -11,7 +11,7 @@ RSpec.describe ActionTracker::Templates::BaseTemplate do
     template = described_class.new(order)
     form = template.form
 
-    expect(form.target_id).to eq order.id
+    expect(form.target_id).to eq order.id.to_s
     expect(form.target_type).to eq order.type
     expect(form.payload.user.id).to eq 0
     expect(form.payload.user.name).to eq 'Anonymous'
@@ -30,7 +30,7 @@ RSpec.describe ActionTracker::Templates::BaseTemplate do
     template = described_class.new(order, reference: reference)
     form = template.form
 
-    expect(form.reference_id).to eq reference.id
+    expect(form.reference_id).to eq reference.id.to_s
     expect(form.reference_type).to eq reference.type
   end
 end
