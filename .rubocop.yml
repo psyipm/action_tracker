@@ -1,6 +1,6 @@
 AllCops:
   TargetRubyVersion: 2.5.5
-
+  NewCops: disable
   Exclude:
     - "Guardfile"
     - "Rakefile"
@@ -30,7 +30,7 @@ Lint/AmbiguousBlockAssociation:
 
 ##################### Metrics ##################################
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 110
 
 Metrics/ClassLength:

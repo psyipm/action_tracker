@@ -7,11 +7,11 @@ module ActionTracker
 
       mimic 'transition'
 
-      attribute :target_id, Integer
+      attribute :target_id, String
       attribute :target_type, String
       attribute :created_at, DateTime
       attribute :payload, ActionTracker::Models::Payload
-      attribute :reference_id, Integer
+      attribute :reference_id, String
       attribute :reference_type, String
 
       delegate :event, :content, :user, to: :payload
