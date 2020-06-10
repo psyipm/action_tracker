@@ -3,7 +3,7 @@
 module ActionTracker
   module Models
     class User < ActionTracker::Models::ApplicationRecord
-      attribute :id, Integer
+      attribute :id, String
       attribute :name, String
       attribute :type, String
 

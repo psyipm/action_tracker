@@ -13,7 +13,7 @@ RSpec.describe ActionTracker::Templates::BaseTemplate do
 
     expect(form.target_id).to eq order.id.to_s
     expect(form.target_type).to eq order.type
-    expect(form.payload.user.id).to eq 0
+    expect(form.payload.user.id).to eq 0.to_s
     expect(form.payload.user.name).to eq 'Anonymous'
   end
 
@@ -21,7 +21,7 @@ RSpec.describe ActionTracker::Templates::BaseTemplate do
     template = described_class.new(order, user: user)
     form = template.form
 
-    expect(form.payload.user.id).to eq user.id
+    expect(form.payload.user.id).to eq user.id.to_s
     expect(form.payload.user.name).to eq user.name
     expect(form.payload.user.type).to eq user.type
   end

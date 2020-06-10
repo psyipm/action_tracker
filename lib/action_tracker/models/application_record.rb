@@ -9,7 +9,7 @@ module ActionTracker
       include Virtus.model
       include ActiveModel::Validations
 
-      attribute :id, Integer
+      attribute :id, String
 
       def self.mimic(model_name)
         @model_name = model_name.to_s.underscore.to_sym

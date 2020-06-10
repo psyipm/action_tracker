@@ -5,7 +5,7 @@ module ActionTracker
     class StatisticRecord < ActionTracker::Models::ApplicationRecord
       include ActionTracker::HttpGateway
 
-      attribute :user_id, Integer
+      attribute :user_id, String
       attribute :report_date, String
       attribute :total_count, Integer
       attribute :targets, Hash
